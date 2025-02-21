@@ -559,7 +559,7 @@ module.exports.init = function (app, done) {
                     return resolve();
                 }
 
-                if (userData.mtaRelay && userData.mtaRelay?.value) {
+                if (userData.mtaRelay?.value) {
                     let relayData = userData.mtaRelay.value;
                     if (typeof relayData === 'string') {
                         relayData = tools.getRelayData(relayData);
