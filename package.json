@@ -7,7 +7,7 @@
     "license": "EUPL-1.1+",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/nodemailer/zonemta-wildduck.git"
+        "url": "git+https://github.com/zone-eu/zonemta-wildduck.git"
     },
     "scripts": {
         "test": "grunt",
