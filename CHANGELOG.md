@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.19](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.18...v1.32.19) (2025-02-28)
+
+
+### Bug Fixes
+
+* **update-package.json:** ZMS-180 ([#36](https://github.com/zone-eu/zonemta-wildduck/issues/36)) ([37b0a33](https://github.com/zone-eu/zonemta-wildduck/commit/37b0a33087007d289e093472888f9b180bbdcd01))
+
 ## [1.32.18](https://github.com/nodemailer/zonemta-wildduck/compare/v1.32.17...v1.32.18) (2024-10-28)
 
 
