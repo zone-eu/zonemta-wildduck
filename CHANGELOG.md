@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.32.19](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.18...v1.32.19) (2025-03-07)
+
+
+### Bug Fixes
+
+* **docker-arm/v7-remove:** ZMS-180-5 ([#40](https://github.com/zone-eu/zonemta-wildduck/issues/40)) ([688a3c4](https://github.com/zone-eu/zonemta-wildduck/commit/688a3c491e92bf1dbf61807c95483e14be2c530f))
+* **docker-workflows:** ZMS-180-3 ([#38](https://github.com/zone-eu/zonemta-wildduck/issues/38)) ([b216790](https://github.com/zone-eu/zonemta-wildduck/commit/b216790007258b1a9be3d7e0e7d91703436d0a14))
+* **update-package.json:** ZMS-180 ([#36](https://github.com/zone-eu/zonemta-wildduck/issues/36)) ([37b0a33](https://github.com/zone-eu/zonemta-wildduck/commit/37b0a33087007d289e093472888f9b180bbdcd01))
+* **workflows-duplicate-latest:** ZMS-180 ([#39](https://github.com/zone-eu/zonemta-wildduck/issues/39)) ([48dee49](https://github.com/zone-eu/zonemta-wildduck/commit/48dee49188348b19a0103dd5fbc0022ac6b11589))
+
 ## [1.32.18](https://github.com/nodemailer/zonemta-wildduck/compare/v1.32.17...v1.32.18) (2024-10-28)
 
 
