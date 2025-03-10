@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.20](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.19...v1.32.20) (2025-03-10)
+
+
+### Bug Fixes
+
+* **docker-workflows:** Remove attestation from release. Use docker-metadata when pushing latest to ghcr ZMS-205 ([#41](https://github.com/zone-eu/zonemta-wildduck/issues/41)) ([6993939](https://github.com/zone-eu/zonemta-wildduck/commit/6993939b3ff8ce675fd56ffa170084a47503c064))
+
 ## [1.32.19](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.18...v1.32.19) (2025-03-07)
 
 
