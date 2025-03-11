@@ -68,8 +68,9 @@ jobs:
                   tags: |
                       type=raw,value=latest
 
-            - name: Build and push
+            - name: Build and push Docker image
               uses: docker/build-push-action@v6
+              id: push
               with:
                   context: .
                   push: true
