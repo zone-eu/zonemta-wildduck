@@ -551,6 +551,35 @@ module.exports.init = function (app, done) {
     app.addHook('queue:route', async (envelope, routing) => {
         let { recipient, deliveryZone } = routing;
 
+        // Check for outbound MTA relay
+        await new Promise(resolve => {
+            getUser(envelope, (err, userData) => {
+                if (err) {
+                    // no user data, just continue
+                    return resolve();
+                }
+
+                if (userData.mtaRelay?.value) {
+                    let relayData = userData.mtaRelay.value;
+                    if (typeof relayData === 'string') {
+                        relayData = tools.getRelayData(relayData);
+                    }
+
+                    const mxData = {};
+                    mxData.mx = relayData.mx;
+                    mxData.mxPort = relayData.mxPort;
+                    mxData.mxAuth = relayData.mxAuth;
+                    mxData.mxSecure = relayData.mxSecure;
+                    mxData.skipSRS = true;
+                    mxData.skipSTS = true;
+
+                    routing.mxData = mxData;
+                }
+
+                return resolve();
+            });
+        });
+
         if (deliveryZone !== 'default' || !app.config.mxRoutes) {
             return;
         }
@@ -1340,7 +1369,8 @@ module.exports.init = function (app, done) {
                     uploadSentMessages: true,
                     disabled: true,
                     suspended: true,
-                    fromWhitelist: true
+                    fromWhitelist: true,
+                    mtaRelay: true
                 }
             },
             (err, userData) => {
