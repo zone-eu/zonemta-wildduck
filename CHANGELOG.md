@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.32.20](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.19...v1.32.20) (2025-03-12)
+
+
+### Bug Fixes
+
+* **docker-workflows:** Do not push duplicate latest on release ZMS-205 ([#43](https://github.com/zone-eu/zonemta-wildduck/issues/43)) ([2cb9583](https://github.com/zone-eu/zonemta-wildduck/commit/2cb9583114666ad555d7b650368e8b5560bfc482))
+* **docker-workflows:** Remove attestation from release. Use docker-metadata when pushing latest to ghcr ZMS-205 ([#41](https://github.com/zone-eu/zonemta-wildduck/issues/41)) ([6993939](https://github.com/zone-eu/zonemta-wildduck/commit/6993939b3ff8ce675fd56ffa170084a47503c064))
+* **mta-relay:** Add support for outbound MTA relay ZMS-171 ([#35](https://github.com/zone-eu/zonemta-wildduck/issues/35)) ([f95a01a](https://github.com/zone-eu/zonemta-wildduck/commit/f95a01a10c3ba8dbb53552ba2358f0555493e779))
+
 ## [1.32.19](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.18...v1.32.19) (2025-03-07)
 
 
