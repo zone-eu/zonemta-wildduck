@@ -14,18 +14,18 @@
         "update": "rm -rf node_modules package-lock.json && ncu -u && npm install"
     },
     "dependencies": {
-        "bcryptjs": "2.4.3",
+        "bcryptjs": "3.0.2",
         "gelf": "2.0.1",
-        "libmime": "5.3.5",
-        "nodemailer": "6.9.16",
+        "libmime": "5.3.7",
+        "nodemailer": "7.0.5",
         "punycode.js": "2.3.1",
         "srs.js": "0.1.0",
-        "wildduck": "1.45.1"
+        "wildduck": "1.45.11"
     },
     "devDependencies": {
         "eslint": "8.57.0",
         "eslint-config-nodemailer": "1.2.0",
-        "eslint-config-prettier": "9.1.0",
+        "eslint-config-prettier": "10.1.8",
         "grunt": "1.6.1",
         "grunt-cli": "1.5.0",
         "grunt-eslint": "24.3.0"
