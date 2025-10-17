@@ -332,7 +332,7 @@ module.exports.init = function (app, done) {
         );
     });
 
-    // use SNI cert if available
+    // Use SNI cert if available
     app.addHook('smtp:sni', (servername, data, next) => {
         if (!servername) {
             return next();
