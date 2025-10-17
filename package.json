@@ -1,5 +1,5 @@
 {
-    "name": "zonemta-wildduck",
+    "name": "@zone-eu/zonemta-wildduck",
     "version": "1.32.21",
     "description": "WildDuck MSA plugin for ZoneMTA",
     "main": "index.js",
@@ -14,13 +14,13 @@
         "update": "rm -rf node_modules package-lock.json && ncu -u && npm install"
     },
     "dependencies": {
+        "@zone-eu/wildduck": "1.46.2",
         "bcryptjs": "3.0.2",
         "gelf": "2.0.1",
         "libmime": "5.3.7",
-        "nodemailer": "7.0.5",
+        "nodemailer": "7.0.9",
         "punycode.js": "2.3.1",
-        "srs.js": "0.1.0",
-        "wildduck": "1.45.11"
+        "srs.js": "0.1.0"
     },
     "devDependencies": {
         "eslint": "8.57.0",
