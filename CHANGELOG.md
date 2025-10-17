@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.22](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.21...v1.32.22) (2025-10-17)
+
+
+### Bug Fixes
+
+* ZMSA-1: update deps, scope package, update release workflow ([#47](https://github.com/zone-eu/zonemta-wildduck/issues/47)) ([4c7ba50](https://github.com/zone-eu/zonemta-wildduck/commit/4c7ba50a8dcd87133e2e25e5214433771172ce02))
+
 ## [1.32.21](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.20...v1.32.21) (2025-08-03)
 
 
