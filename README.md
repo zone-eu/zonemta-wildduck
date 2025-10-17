@@ -17,7 +17,7 @@ WildDuck actions apply only to interfaces that require authentication.
 Add this as a dependency of your ZoneMTA app:
 
 ```sh
-npm install zonemta-wildduck --save
+npm install @zone-eu/zonemta-wildduck --save
 ```
 
 Add a configuration entry in the "plugins" section of your ZoneMTA app
@@ -37,6 +37,6 @@ Then set up configuration for this plugin, see the [example config](./config.exa
 
 European Union Public License 1.1 ([details](http://ec.europa.eu/idabc/eupl.html)) or later.
 
-> `zonemta-wildduck` module is part of the Zone Mail Suite (ZMS). Suite of programs and modules for an efficient, fast and modern email server.
+> `@zone-eu/zonemta-wildduck` module is part of the Zone Mail Suite (ZMS). Suite of programs and modules for an efficient, fast and modern email server.
 
 Copyright (c) 2024 Zone Media OÜ
