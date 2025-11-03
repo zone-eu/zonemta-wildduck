@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.23](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.22...v1.32.23) (2025-11-03)
+
+
+### Bug Fixes
+
+* ZMS-280: bump deps ([#50](https://github.com/zone-eu/zonemta-wildduck/issues/50)) ([c55fc11](https://github.com/zone-eu/zonemta-wildduck/commit/c55fc1180760375867a9501fe98bb4249ad371de))
+
 ## [1.32.22](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.21...v1.32.22) (2025-10-17)
 
 
