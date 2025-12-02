@@ -18,7 +18,7 @@
         "bcryptjs": "3.0.3",
         "gelf": "2.0.1",
         "libmime": "5.3.7",
-        "nodemailer": "7.0.10",
+        "nodemailer": "7.0.11",
         "punycode.js": "2.3.1",
         "srs.js": "0.1.0"
     },
