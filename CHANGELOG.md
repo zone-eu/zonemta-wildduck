@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.24](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.23...v1.32.24) (2025-12-05)
+
+
+### Bug Fixes
+
+* ZMSA-14: bump deps, update config ([#53](https://github.com/zone-eu/zonemta-wildduck/issues/53)) ([5077432](https://github.com/zone-eu/zonemta-wildduck/commit/5077432e2157125ab6963120d198612de141c3cb))
+
 ## [1.32.23](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.22...v1.32.23) (2025-11-03)
 
 
