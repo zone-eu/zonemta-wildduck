@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.25](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.24...v1.32.25) (2025-12-09)
+
+
+### Bug Fixes
+
+* **workflows-deps:** ZMSA-46: update workflows ([#55](https://github.com/zone-eu/zonemta-wildduck/issues/55)) ([b2fa193](https://github.com/zone-eu/zonemta-wildduck/commit/b2fa193cc500962d72a6772623cf9d7bc385eca1))
+
 ## [1.32.24](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.23...v1.32.24) (2025-12-05)
 
 
