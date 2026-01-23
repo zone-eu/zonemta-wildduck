@@ -278,6 +278,13 @@ module.exports.init = function (app, done) {
                 if (err) {
                     return next(err);
                 }
+
+                if (result && result.asp) {
+                    auth.passwordType = 'asp';
+                } else {
+                    auth.passwordType = 'master';
+                }
+
                 if (!result || (result.scope === 'master' && result.require2fa)) {
                     let message = 'Authentication failed';
                     if (result) {
