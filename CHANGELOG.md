@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.26](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.25...v1.32.26) (2026-01-27)
+
+
+### Bug Fixes
+
+* ZMSA-64: Add passwordType to auth object on smtp:auth hook ([#58](https://github.com/zone-eu/zonemta-wildduck/issues/58)) ([2b9c455](https://github.com/zone-eu/zonemta-wildduck/commit/2b9c45576d44282dc8331f0bd7d029ce39d4bb76))
+
 ## [1.32.25](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.24...v1.32.25) (2025-12-09)
 
 
