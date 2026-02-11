@@ -14,7 +14,7 @@
         "update": "rm -rf node_modules package-lock.json && ncu -u && npm install"
     },
     "dependencies": {
-        "@zone-eu/wildduck": "1.46.12",
+        "@zone-eu/wildduck": "1.46.21",
         "bcryptjs": "3.0.3",
         "gelf": "2.0.1",
         "libmime": "5.3.7",
