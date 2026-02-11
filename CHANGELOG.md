@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.27](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.26...v1.32.27) (2026-02-11)
+
+
+### Bug Fixes
+
+* bump deps, so that wd dkim won't fail on node 24+ ([#61](https://github.com/zone-eu/zonemta-wildduck/issues/61)) ([c553873](https://github.com/zone-eu/zonemta-wildduck/commit/c55387380e83a462174d687bb91adabb0c598cc8))
+
 ## [1.32.26](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.25...v1.32.26) (2026-01-27)
 
 
