@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.28](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.27...v1.32.28) (2026-02-16)
+
+
+### Bug Fixes
+
+* ZMS-17: log:entry hook, add fallbacks for undefined values ([#64](https://github.com/zone-eu/zonemta-wildduck/issues/64)) ([654c46c](https://github.com/zone-eu/zonemta-wildduck/commit/654c46ceee7c561acdaaf882227ae956c9b16e9e))
+
 ## [1.32.27](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.26...v1.32.27) (2026-02-11)
 
 
