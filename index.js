@@ -1040,6 +1040,7 @@ module.exports.init = function (app, done) {
     app.addHook('sender:connection', (delivery, connection, next) => connectionHandler(delivery, next));
 
     app.addHook('log:entry', (entry, next) => {
+        entry = entry && typeof entry === 'object' ? entry : {};
         entry.created = new Date();
 
         let message = {
@@ -1069,13 +1070,13 @@ module.exports.init = function (app, done) {
 
         let headerFrom = entry.headerFrom;
         let headerFromList;
-        let headerFromObj;
+        let headerFromObj = {};
         let headerFromName;
 
         if (headerFrom) {
             message._header_from_value = headerFrom;
             headerFromList = addressparser(headerFrom);
-            if (headerFromList.length) {
+            if (headerFromList && headerFromList.length) {
                 headerFromObj = headerFromList[0] || {};
                 if (headerFromObj.group) {
                     headerFromObj = {};
@@ -1102,6 +1103,7 @@ module.exports.init = function (app, done) {
             case 'QUEUED':
                 {
                     let username = (entry.user || entry.auth || '').toString();
+                    let subject = (entry.subject || '').toString();
                     let match = username.match(/\[([^\]]+)]/);
                     if (match && match[1]) {
                         username = match[1];
@@ -1117,9 +1119,9 @@ module.exports.init = function (app, done) {
                     message._interface = entry.interface;
                     message._proto = entry.transtype;
                     message._subject =
-                        Buffer.byteLength(entry.subject, 'utf8') > maxSubjectLineLogLengthBytes
-                            ? entry.subject.substring(0, maxSubjectLineLogLengthBytes / 4) // divide by 4 to account for max utf-8 char size
-                            : entry.subject;
+                        Buffer.byteLength(subject, 'utf8') > maxSubjectLineLogLengthBytes
+                            ? subject.substring(0, maxSubjectLineLogLengthBytes / 4) // divide by 4 to account for max utf-8 char size
+                            : subject;
 
                     message._authenticated_sender = username;
                 }
