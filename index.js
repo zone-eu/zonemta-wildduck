@@ -648,7 +648,7 @@ module.exports.init = function (app, done) {
                 return next();
             }
 
-            ttlcounter(`wdr: {${userData._id.toString()}}`, 0, userData.recipients, false, (err, result) => {
+            ttlcounter(`wdr:{${userData._id.toString()}}`, 0, userData.recipients, false, (err, result) => {
                 if (err) {
                     return next(err);
                 }
