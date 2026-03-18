@@ -18,7 +18,6 @@ RUN apk add --no-cache tini
 
 WORKDIR /app
 COPY --from=builder /app /app
-RUN mkdir -p /app/config/plugins
 COPY config.example.toml /app/config/plugins/wildduck.toml
 
 ENTRYPOINT ["/sbin/tini", "--"]
