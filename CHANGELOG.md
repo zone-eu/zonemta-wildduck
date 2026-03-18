@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.32.30](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.29...v1.32.30) (2026-03-18)
+
+
+### Bug Fixes
+
+* ZMS-13: Add zonemta-wildduck example config into zone-mta config ([#72](https://github.com/zone-eu/zonemta-wildduck/issues/72)) ([e80bdd2](https://github.com/zone-eu/zonemta-wildduck/commit/e80bdd2eb5827ac737049dc9fc1e1bf95134ce48))
+* ZMS-39: Do not strip &lt;&gt; off of message_id ([#71](https://github.com/zone-eu/zonemta-wildduck/issues/71)) ([20f4f3f](https://github.com/zone-eu/zonemta-wildduck/commit/20f4f3fa7569dec4039c099a235fe0f917690ea2))
+
 ## [1.32.29](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.28...v1.32.29) (2026-03-03)
 
 
