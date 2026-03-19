@@ -587,6 +587,53 @@ module.exports.init = function (app, done) {
             });
         });
 
+        // Check for local delivery bypass
+        // This prevents mail loops when using a hybrid setup (e.g., Google Workspace + local WildDuck)
+        // where the MX points to an external service that forwards back to us
+        app.logger.info('LocalDelivery', 'DEBUG recipient=%s routing.mxData=%s config.localDelivery=%s', recipient, !!routing.mxData, JSON.stringify(app.config.localDelivery));
+        if (!routing.mxData && recipient && app.config.localDelivery && app.config.localDelivery.enabled) {
+            let domain = recipient && recipient.substring(recipient.indexOf('@') + 1).toLowerCase().trim();
+
+            try {
+                domain = punycode.toASCII(domain);
+            } catch (err) {
+                // ignore punycode errors
+            }
+
+            // Check if this domain is in the local delivery list
+            const localDomains = [].concat(app.config.localDelivery.domains || []);
+            if (localDomains.includes(domain)) {
+                // Check if recipient exists in WildDuck
+                const isLocal = await new Promise((resolve) => {
+                    userHandler.resolveAddress(recipient, { wildcard: true }, (err, addressData) => {
+                        if (err || !addressData) {
+                            return resolve(false);
+                        }
+                        // addressData.user exists if it's a valid local address
+                        resolve(!!addressData.user);
+                    });
+                });
+
+                if (isLocal) {
+                    const targetHost = app.config.localDelivery.targetHost || '127.0.0.1';
+
+                    routing.mxData = {
+                        mx: [{ priority: 0, exchange: targetHost }]
+                    };
+
+                    app.logger.info(
+                        'LocalDelivery',
+                        '%s LOCALDELIVERY recipient=%s domain=%s target=%s',
+                        envelope.id,
+                        recipient,
+                        domain,
+                        targetHost
+                    );
+                    return;
+                }
+            }
+        }
+
         if (deliveryZone !== 'default' || !app.config.mxRoutes) {
             return;
         }
