@@ -60,7 +60,16 @@ targetPort = 25
 
 ### Important Warnings
 
+**⚠️ Context Requirement**: If using `localDelivery`, you **MUST** add `"main"` to the enabled contexts:
+```toml
+["modules/@zone-eu/zonemta-wildduck"]
+enabled=["receiver", "sender", "main"]
+```
+The `queue:route` hook (which enables localDelivery) runs in the "main" context. Without this, localDelivery will not work.
+
 **⚠️ Duplicate Mailboxes**: If a mailbox exists in **both** Google Workspace AND WildDuck, this setting will cause unexpected behavior. Mail from ZoneMTA will always be delivered to WildDuck, even if the user expects it in Gmail. Only enable this if you're certain addresses are exclusive to one system or the other.
+
+**⚠️ SPF on Internal Delivery**: When delivering locally via `targetHost`, the receiving server sees ZoneMTA's internal IP instead of the original sender IP. This can cause SPF checks to fail on the internal hop (e.g., `spf=fail` in Haraka logs). **DKIM signatures remain valid** and are unaffected. If SPF failures are problematic, configure your receiving server to skip SPF for trusted internal IPs (e.g., Haraka's private IP range).
 
 **⚠️ Address Exclusivity**: This feature assumes addresses in the configured domains exist in WildDuck OR the external system, not both. Review your address allocation before enabling.
 

@@ -128,6 +128,16 @@ enabled = false
 # in BOTH Google Workspace AND WildDuck, mail will always go to WildDuck. Only use
 # this if addresses are exclusive to one system or the other.
 #
+# IMPORTANT: If using localDelivery, you MUST add "main" to the enabled contexts:
+# enabled=["receiver", "sender", "main"]
+# The queue:route hook (which enables localDelivery) runs in the "main" context.
+#
+# NOTE: When delivering locally via targetHost, the receiving server may see the
+# internal ZoneMTA IP instead of the original sender IP. This can cause SPF checks
+# to fail on the internal hop. DKIM signatures remain valid. If SPF failures
+# are problematic, configure your receiving server (e.g., Haraka) to skip SPF
+# for trusted internal IPs.
+#
 # ["modules/@zone-eu/zonemta-wildduck".localDelivery]
 # enabled = false              # Set to true to enable MX override for local addresses
 # domains = ["example.com"]    # List of domains to check for local recipients
