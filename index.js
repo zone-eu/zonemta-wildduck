@@ -1462,6 +1462,29 @@ module.exports.init = function (app, done) {
         );
     }
 
+    const localDeliveryEnabled = !!(app.config.localDelivery && app.config.localDelivery.enabled);
+    const localDeliveryDomains = localDeliveryEnabled && app.config.localDelivery.domains 
+        ? app.config.localDelivery.domains.join(',') 
+        : 'none';
+    const srsEnabled = !!(app.config.srs && app.config.srs.enabled);
+    const dkimEnabled = !!(app.config.dkim && app.config.dkim.signTransportDomain);
+    const acmeEnabled = !!(app.config.acme && app.config.acme.autogenerate && app.config.acme.autogenerate.enabled);
+    const mxRoutesCount = app.config.mxRoutes ? Object.keys(app.config.mxRoutes).length : 0;
+    
+    app.logger.info('WildDuck', 
+        'Initialized hostname=%s interfaces=%s localDelivery=%s(localDomains=%s) srs=%s dkim=%s acme=%s mxRoutes=%s maxRecipients=%s uploads=%s',
+        app.config.hostname || 'default',
+        [].concat(app.config.interfaces || '*').join(','),
+        localDeliveryEnabled ? 'enabled' : 'disabled',
+        localDeliveryDomains,
+        srsEnabled ? 'enabled' : 'disabled',
+        dkimEnabled ? 'enabled' : 'disabled',
+        acmeEnabled ? 'enabled' : 'disabled',
+        mxRoutesCount,
+        app.config.maxRecipients || 'default',
+        app.config.disableUploads ? 'disabled' : (app.config.uploadAll ? 'all' : 'filtered')
+    );
+
     done();
 };
 
