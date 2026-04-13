@@ -125,7 +125,6 @@ module.exports.init = function (app, done) {
         loggelf: message => loggelf(message)
     });
 
-    const encryptMessage = util.promisify(messageHandler.encryptMessage.bind(messageHandler));
     const prepareMessage = util.promisify(messageHandler.prepareMessage.bind(messageHandler));
 
     const addMessage = util.promisify((...args) => {
@@ -814,19 +813,6 @@ module.exports.init = function (app, done) {
                             let raw = Buffer.concat(chunks, chunklen);
 
                             let storeSentMessage = async () => {
-                                // Checks if the message needs to be encrypted before storing it
-                                let messageSource = raw;
-
-                                if (userData.encryptMessages && userData.pubKey) {
-                                    try {
-                                        let encrypted = await encryptMessage(userData.pubKey, raw);
-                                        if (encrypted) {
-                                            messageSource = encrypted;
-                                        }
-                                    } catch (err) {
-                                        // ignore
-                                    }
-                                }
                                 try {
                                     let { data } = await addMessage({
                                         user: userData._id,
@@ -848,7 +834,7 @@ module.exports.init = function (app, done) {
 
                                         date: false,
                                         flags: ['\\Seen'],
-                                        raw: messageSource,
+                                        raw,
 
                                         // if similar message exists, then skip
                                         skipExisting: true
@@ -1430,10 +1416,13 @@ function generateReceivedHeader(envelope, hostname) {
         origin = origin.join(' ').trim() || 'localhost';
     }
 
-    let username = (envelope.user || '').toString();
-    let match = username.match(/\[([^\]]+)]/);
-    if (match && match[1]) {
-        username = match[1];
+    let username = '';
+    if (envelope.user) {
+        try {
+            username = tools.normalizeAddress(envelope.user);
+        } catch (err) {
+            username = envelope.user;
+        }
     }
 
     let value =
