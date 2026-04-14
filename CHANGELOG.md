@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.31](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.30...v1.32.31) (2026-04-14)
+
+
+### Bug Fixes
+
+* ZMS-46: Move encryption to WD, fix authenticatedSender encoding, bump deps ([#81](https://github.com/zone-eu/zonemta-wildduck/issues/81)) ([6a43657](https://github.com/zone-eu/zonemta-wildduck/commit/6a43657656e940b84d3b439e45926eaaba77fe7c))
+
 ## [1.32.30](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.29...v1.32.30) (2026-03-18)
 
 
