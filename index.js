@@ -587,21 +587,25 @@ module.exports.init = function (app, done) {
             });
         });
 
+        function domainToASCII(domain) {
+            if (!domain) {
+                return '';
+            }
+            const normalized = domain.toLowerCase().trim();
+            try {
+                return punycode.toASCII(normalized);
+            } catch (err) {
+                return normalized;
+            }
+        }
+
         // Check for local delivery bypass
         // This prevents mail loops when using a hybrid setup (e.g., Google Workspace + local WildDuck)
         // where the MX points to an external service that forwards back to us
-        app.logger.info('LocalDelivery', 'DEBUG recipient=%s routing.mxData=%s config.localDelivery=%s', recipient, !!routing.mxData, JSON.stringify(app.config.localDelivery));
         if (!routing.mxData && recipient && app.config.localDelivery && app.config.localDelivery.enabled) {
-            let domain = recipient && recipient.substring(recipient.indexOf('@') + 1).toLowerCase().trim();
+            const domain = domainToASCII(recipient.substring(recipient.indexOf('@') + 1));
 
-            try {
-                domain = punycode.toASCII(domain);
-            } catch (err) {
-                // ignore punycode errors
-            }
-
-            // Check if this domain is in the local delivery list
-            const localDomains = [].concat(app.config.localDelivery.domains || []);
+            const localDomains = [].concat(app.config.localDelivery.domains || []).map(domainToASCII);
             if (localDomains.includes(domain)) {
                 // Check if recipient exists in WildDuck
                 const isLocal = await new Promise((resolve) => {
@@ -616,18 +620,25 @@ module.exports.init = function (app, done) {
 
                 if (isLocal) {
                     const targetHost = app.config.localDelivery.targetHost || '127.0.0.1';
+                    const targetPort = app.config.localDelivery.targetPort;
 
-                    routing.mxData = {
-                        mx: [{ priority: 0, exchange: targetHost }]
+                    const mxData = {
+                        mx: [{ priority: 0, exchange: targetHost }],
+                        skipSTS: true
                     };
+                    if (targetPort) {
+                        mxData.mxPort = targetPort;
+                    }
+                    routing.mxData = mxData;
 
                     app.logger.info(
                         'LocalDelivery',
-                        '%s LOCALDELIVERY recipient=%s domain=%s target=%s',
+                        '%s LOCALDELIVERY recipient=%s domain=%s target=%s%s',
                         envelope.id,
                         recipient,
                         domain,
-                        targetHost
+                        targetHost,
+                        targetPort ? ':' + targetPort : ''
                     );
                     return;
                 }

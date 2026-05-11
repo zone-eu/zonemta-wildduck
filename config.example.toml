@@ -140,5 +140,6 @@ enabled = false
 #
 # ["modules/@zone-eu/zonemta-wildduck".localDelivery]
 # enabled = false              # Set to true to enable MX override for local addresses
-# domains = ["example.com"]    # List of domains to check for local recipients
+# domains = ["example.com"]    # List of domains to check for local recipients (lowercase ASCII recommended)
 # targetHost = "127.0.0.1"     # Internal SMTP server (e.g., Haraka) to use instead of MX lookup
+# targetPort = 25              # Optional: Port for internal SMTP server (defaults to zone's port or 25)
