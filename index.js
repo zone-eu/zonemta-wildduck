@@ -586,6 +586,64 @@ module.exports.init = function (app, done) {
             });
         });
 
+        function domainToASCII(domain) {
+            if (!domain) {
+                return '';
+            }
+            const normalized = domain.toLowerCase().trim();
+            try {
+                return punycode.toASCII(normalized);
+            } catch (err) {
+                return normalized;
+            }
+        }
+
+        // Check for local delivery bypass
+        // This prevents mail loops when using a hybrid setup (e.g., Google Workspace + local WildDuck)
+        // where the MX points to an external service that forwards back to us
+        if (!routing.mxData && recipient && app.config.localDelivery && app.config.localDelivery.enabled) {
+            const domain = domainToASCII(recipient.substring(recipient.indexOf('@') + 1));
+
+            const localDomains = [].concat(app.config.localDelivery.domains || []).map(domainToASCII);
+            if (localDomains.includes(domain)) {
+                // Check if recipient exists in WildDuck
+                const isLocal = await new Promise((resolve) => {
+                    userHandler.resolveAddress(recipient, { wildcard: true }, (err, addressData) => {
+                        if (err || !addressData) {
+                            return resolve(false);
+                        }
+                        // addressData.user exists if it's a valid local address
+                        resolve(!!addressData.user);
+                    });
+                });
+
+                if (isLocal) {
+                    const targetHost = app.config.localDelivery.targetHost || '127.0.0.1';
+                    const targetPort = app.config.localDelivery.targetPort;
+
+                    const mxData = {
+                        mx: [{ priority: 0, exchange: targetHost }],
+                        skipSTS: true
+                    };
+                    if (targetPort) {
+                        mxData.mxPort = targetPort;
+                    }
+                    routing.mxData = mxData;
+
+                    app.logger.info(
+                        'LocalDelivery',
+                        '%s LOCALDELIVERY recipient=%s domain=%s target=%s%s',
+                        envelope.id,
+                        recipient,
+                        domain,
+                        targetHost,
+                        targetPort ? ':' + targetPort : ''
+                    );
+                    return;
+                }
+            }
+        }
+
         if (deliveryZone !== 'default' || !app.config.mxRoutes) {
             return;
         }
@@ -1400,6 +1458,29 @@ module.exports.init = function (app, done) {
             }
         );
     }
+
+    const localDeliveryEnabled = !!(app.config.localDelivery && app.config.localDelivery.enabled);
+    const localDeliveryDomains = localDeliveryEnabled && app.config.localDelivery.domains 
+        ? app.config.localDelivery.domains.join(',') 
+        : 'none';
+    const srsEnabled = !!(app.config.srs && app.config.srs.enabled);
+    const dkimEnabled = !!(app.config.dkim && app.config.dkim.signTransportDomain);
+    const acmeEnabled = !!(app.config.acme && app.config.acme.autogenerate && app.config.acme.autogenerate.enabled);
+    const mxRoutesCount = app.config.mxRoutes ? Object.keys(app.config.mxRoutes).length : 0;
+    
+    app.logger.info('WildDuck', 
+        'Initialized hostname=%s interfaces=%s localDelivery=%s(localDomains=%s) srs=%s dkim=%s acme=%s mxRoutes=%s maxRecipients=%s uploads=%s',
+        app.config.hostname || 'default',
+        [].concat(app.config.interfaces || '*').join(','),
+        localDeliveryEnabled ? 'enabled' : 'disabled',
+        localDeliveryDomains,
+        srsEnabled ? 'enabled' : 'disabled',
+        dkimEnabled ? 'enabled' : 'disabled',
+        acmeEnabled ? 'enabled' : 'disabled',
+        mxRoutesCount,
+        app.config.maxRecipients || 'default',
+        app.config.disableUploads ? 'disabled' : (app.config.uploadAll ? 'all' : 'filtered')
+    );
 
     done();
 };
