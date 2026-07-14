@@ -608,9 +608,12 @@ module.exports.init = function (app, done) {
             const localDomains = [].concat(app.config.localDelivery.domains || []).map(domainToASCII);
             if (localDomains.includes(domain)) {
                 // Check if recipient exists in WildDuck
-                const isLocal = await new Promise((resolve) => {
+                const isLocal = await new Promise((resolve, reject) => {
                     userHandler.resolveAddress(recipient, { wildcard: true }, (err, addressData) => {
-                        if (err || !addressData) {
+                        if (err) {
+                            return reject(err);
+                        }
+                        if (!addressData) {
                             return resolve(false);
                         }
                         // addressData.user exists if it's a valid local address
