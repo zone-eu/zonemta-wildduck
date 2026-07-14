@@ -1047,7 +1047,6 @@ module.exports.init = function (app, done) {
             ['httpUrl', '_http_url'],
             ['tlsVersion', '_tls_version'],
             ['tlsCipher', '_tls_cipher'],
-            ['tlsCipherBits', '_tls_cipher_bits'],
             ['tlsAuthorizationError', '_tls_authorization_error']
         ];
 
