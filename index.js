@@ -1034,6 +1034,28 @@ module.exports.init = function (app, done) {
             _queue_id_seq: (entry.seq || '').toString()
         };
 
+        if (typeof entry.secure === 'boolean') {
+            message._secure = entry.secure ? 'yes' : 'no';
+        }
+        if (typeof entry.tls === 'boolean') {
+            message._tls = entry.tls ? 'yes' : 'no';
+        }
+        if (entry.tlsVersion) {
+            message._tls_version = entry.tlsVersion;
+        }
+        if (entry.tlsCipher) {
+            message._tls_cipher = entry.tlsCipher;
+        }
+        if (entry.tlsCipherBits) {
+            message._tls_cipher_bits = entry.tlsCipherBits;
+        }
+        if (typeof entry.tlsAuthorized === 'boolean') {
+            message._tls_authorized = entry.tlsAuthorized ? 'yes' : 'no';
+        }
+        if (entry.tlsAuthorizationError) {
+            message._tls_authorization_error = entry.tlsAuthorizationError;
+        }
+
         if (entry.rwRcptFrom) {
             message._rewrite_rcpt_from = entry.rwRcptFrom;
         }
