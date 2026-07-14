@@ -1034,20 +1034,33 @@ module.exports.init = function (app, done) {
             _queue_id_seq: (entry.seq || '').toString()
         };
 
-        if (entry.rwRcptFrom) {
-            message._rewrite_rcpt_from = entry.rwRcptFrom;
+        const boolFields = [
+            ['secure', '_secure'],
+            ['tls', '_tls'],
+            ['tlsAuthorized', '_tls_authorized']
+        ];
+
+        const passthroughFields = [
+            ['rwRcptFrom', '_rewrite_rcpt_from'],
+            ['rwHeaderFrom', '_rewrite_header_from'],
+            ['protocol', '_delivery_protocol'],
+            ['httpUrl', '_http_url'],
+            ['tlsVersion', '_tls_version'],
+            ['tlsCipher', '_tls_cipher'],
+            ['tlsCipherBits', '_tls_cipher_bits'],
+            ['tlsAuthorizationError', '_tls_authorization_error']
+        ];
+
+        for (const [src, dest] of boolFields) {
+            if (typeof entry[src] === 'boolean') {
+                message[dest] = entry[src] ? 'yes' : 'no';
+            }
         }
 
-        if (entry.rwHeaderFrom) {
-            message._rewrite_header_from = entry.rwHeaderFrom;
-        }
-
-        if (entry.protocol) {
-            message._delivery_protocol = entry.protocol;
-        }
-
-        if (entry.httpUrl) {
-            message._http_url = entry.httpUrl;
+        for (const [src, dest] of passthroughFields) {
+            if (entry[src]) {
+                message[dest] = entry[src];
+            }
         }
 
         if (entry.httpResponse && Number(entry.httpResponse)) {
