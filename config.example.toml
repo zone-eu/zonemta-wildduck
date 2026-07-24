@@ -109,3 +109,38 @@ enabled = false
 
 #["modules/@zone-eu/zonemta-wildduck".mxRoutes]
 #    "*.l.google.com" = "gmail"
+
+# Local Delivery Bypass (MX Override)
+# -----------------------------------
+# Use this when running a hybrid mail setup (e.g., Google Workspace + local WildDuck)
+# where the MX records point to an external service (Google) which then forwards
+# unknown addresses back to your local server via a catch-all route.
+#
+# Without this setting, ZoneMTA would look up the MX, see Google, and deliver there.
+# Google would then try to deliver back to you, potentially causing delivery delays
+# or mail loops.
+#
+# When enabled, ZoneMTA checks if the recipient exists in WildDuck BEFORE doing
+# the MX lookup. If found, it overrides the MX routing and delivers directly to
+# your internal server instead.
+#
+# WARNING: This overrides the MX routing for local addresses. If a mailbox exists
+# in BOTH Google Workspace AND WildDuck, mail will always go to WildDuck. Only use
+# this if addresses are exclusive to one system or the other.
+#
+# IMPORTANT: localDelivery requires "main". The targetHost fallback also
+# requires "sender" to keep local and external SMTP connections isolated:
+# enabled=["receiver", "sender", "main"]
+#
+# NOTE: When delivering locally via targetHost, the receiving server may see the
+# internal ZoneMTA IP instead of the original sender IP. This can cause SPF checks
+# to fail on the internal hop. DKIM signatures remain valid. If SPF failures
+# are problematic, configure your receiving server (e.g., Haraka) to skip SPF
+# for trusted internal IPs.
+#
+# ["modules/@zone-eu/zonemta-wildduck".localDelivery]
+# enabled = false              # Set to true to enable MX override for local addresses
+# domains = ["example.com"]    # List of domains to check for local recipients (lowercase ASCII recommended)
+# deliveryZone = "local"       # Optional existing ZoneMTA zone for internal delivery
+# targetHost = "127.0.0.1"     # Used when deliveryZone is not set
+# targetPort = 25              # Optional targetHost port (defaults to the current zone's port or 25)

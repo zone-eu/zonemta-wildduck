@@ -586,6 +586,64 @@ module.exports.init = function (app, done) {
             });
         });
 
+        function domainToASCII(domain) {
+            if (!domain) {
+                return '';
+            }
+            const normalized = domain.toLowerCase().trim();
+            try {
+                return punycode.toASCII(normalized);
+            } catch (err) {
+                return normalized;
+            }
+        }
+
+        // Check for local delivery bypass
+        // This prevents mail loops when using a hybrid setup (e.g., Google Workspace + local WildDuck)
+        // where the MX points to an external service that forwards back to us
+        if (!routing.mxData && recipient && app.config.localDelivery && app.config.localDelivery.enabled) {
+            const domain = domainToASCII(recipient.substring(recipient.indexOf('@') + 1));
+            const localDomains = [].concat(app.config.localDelivery.domains || []).map(domainToASCII);
+
+            if (localDomains.includes(domain)) {
+                const isLocal = await new Promise((resolve, reject) => {
+                    userHandler.resolveAddress(recipient, { wildcard: true }, (err, addressData) => {
+                        if (err) {
+                            err.responseCode = 451;
+                            return reject(err);
+                        }
+                        resolve(!!(addressData && (addressData.user || (addressData.targets && addressData.targets.length))));
+                    });
+                });
+
+                if (isLocal) {
+                    const localZone = app.config.localDelivery.deliveryZone;
+                    routing.mxData = { skipSTS: true };
+
+                    if (localZone) {
+                        routing.deliveryZone = localZone;
+                    } else {
+                        const targetHost = app.config.localDelivery.targetHost || '127.0.0.1';
+                        const targetPort = app.config.localDelivery.targetPort;
+                        routing.mxData.mx = [{ priority: 0, exchange: targetHost, localDelivery: true }];
+                        if (targetPort) {
+                            routing.mxData.mxPort = targetPort;
+                        }
+                    }
+
+                    app.logger.info(
+                        'LocalDelivery',
+                        '%s LOCALDELIVERY recipient=%s domain=%s route=%s',
+                        envelope.id,
+                        recipient,
+                        domain,
+                        localZone || routing.mxData.mx[0].exchange + (routing.mxData.mxPort ? ':' + routing.mxData.mxPort : '')
+                    );
+                    return;
+                }
+            }
+        }
+
         if (deliveryZone !== 'default' || !app.config.mxRoutes) {
             return;
         }
@@ -629,6 +687,20 @@ module.exports.init = function (app, done) {
         } catch (err) {
             // ignore?
             app.logger.error('Main', '%s MXROUTEERR recipient=%s error=%s', envelope.id, recipient, err.message);
+        }
+    });
+
+    // ZoneMTA's default connection pool key uses the recipient domain, which is
+    // shared by local and external recipients in a hybrid setup. Use the tagged
+    // local MX target in the key so that these connections can not be mixed.
+    app.addHook('sender:fetch', async delivery => {
+        const localMx = delivery.mx && delivery.mx.find(mx => mx && mx.localDelivery);
+        if (localMx) {
+            const source = [delivery.zoneAddress, delivery.zoneAddressIPv4, delivery.zoneAddressIPv6]
+                .map(entry => entry && entry.address)
+                .filter(Boolean)
+                .join(',');
+            delivery.connectionKey = ['local-delivery', source, localMx.exchange, delivery.mxPort || 'default'].join(':');
         }
     });
 
@@ -1412,6 +1484,29 @@ module.exports.init = function (app, done) {
             }
         );
     }
+
+    const localDeliveryEnabled = !!(app.config.localDelivery && app.config.localDelivery.enabled);
+    const localDeliveryDomains =
+        localDeliveryEnabled && app.config.localDelivery.domains ? [].concat(app.config.localDelivery.domains).join(',') : 'none';
+    const srsEnabled = !!(app.config.srs && app.config.srs.enabled);
+    const dkimEnabled = !!(app.config.dkim && app.config.dkim.signTransportDomain);
+    const acmeEnabled = !!(app.config.acme && app.config.acme.autogenerate && app.config.acme.autogenerate.enabled);
+    const mxRoutesCount = app.config.mxRoutes ? Object.keys(app.config.mxRoutes).length : 0;
+
+    app.logger.info(
+        'WildDuck',
+        'Initialized hostname=%s interfaces=%s localDelivery=%s(localDomains=%s) srs=%s dkim=%s acme=%s mxRoutes=%s maxRecipients=%s uploads=%s',
+        app.config.hostname || 'default',
+        [].concat(app.config.interfaces || '*').join(','),
+        localDeliveryEnabled ? 'enabled' : 'disabled',
+        localDeliveryDomains,
+        srsEnabled ? 'enabled' : 'disabled',
+        dkimEnabled ? 'enabled' : 'disabled',
+        acmeEnabled ? 'enabled' : 'disabled',
+        mxRoutesCount,
+        app.config.maxRecipients || 'default',
+        app.config.disableUploads ? 'disabled' : app.config.uploadAll ? 'all' : 'filtered'
+    );
 
     done();
 };
