@@ -54,18 +54,19 @@ Enable the `localDelivery` option. This tells ZoneMTA to check if a recipient ex
 ["modules/@zone-eu/zonemta-wildduck".localDelivery]
 enabled = true
 domains = ["example.com"]
-targetHost = "127.0.0.1"  # Your internal SMTP server (Haraka/Postfix)
-targetPort = 25
+deliveryZone = "local" # Existing ZoneMTA zone configured for internal delivery
 ```
+
+If no dedicated ZoneMTA zone exists, omit `deliveryZone` and configure `targetHost` and optional `targetPort` instead.
 
 ### Important Warnings
 
-**⚠️ Context Requirement**: If using `localDelivery`, you **MUST** add `"main"` to the enabled contexts:
+**⚠️ Context Requirement**: If using `localDelivery`, you **MUST** enable the `"main"` context. The `"sender"` context is also required when using the `targetHost` fallback:
 ```toml
 ["modules/@zone-eu/zonemta-wildduck"]
 enabled=["receiver", "sender", "main"]
 ```
-The `queue:route` hook (which enables localDelivery) runs in the "main" context. Without this, localDelivery will not work.
+The routing hook runs in `"main"`. Without a dedicated delivery zone, the `"sender"` hook keeps local and external SMTP connections isolated.
 
 **⚠️ Duplicate Mailboxes**: If a mailbox exists in **both** Google Workspace AND WildDuck, this setting will cause unexpected behavior. Mail from ZoneMTA will always be delivered to WildDuck, even if the user expects it in Gmail. Only enable this if you're certain addresses are exclusive to one system or the other.
 
