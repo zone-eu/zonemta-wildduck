@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.32.31](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.30...v1.32.31) (2026-07-24)
+
+
+### Bug Fixes
+
+* bump deps ([#96](https://github.com/zone-eu/zonemta-wildduck/issues/96)) ([7ad4183](https://github.com/zone-eu/zonemta-wildduck/commit/7ad41832562694fb96d4f1bbc869f4e87c354cde))
+* Hybrid mx ([#95](https://github.com/zone-eu/zonemta-wildduck/issues/95)) ([67c87bb](https://github.com/zone-eu/zonemta-wildduck/commit/67c87bb6758e27b0c37cef23221138ff458c3aec))
+* ZMS-46: Move encryption to WD, fix authenticatedSender encoding, bump deps ([#81](https://github.com/zone-eu/zonemta-wildduck/issues/81)) ([6a43657](https://github.com/zone-eu/zonemta-wildduck/commit/6a43657656e940b84d3b439e45926eaaba77fe7c))
+* ZMS-82-1: Remove tlsCipherBits ([#94](https://github.com/zone-eu/zonemta-wildduck/issues/94)) ([b18b91e](https://github.com/zone-eu/zonemta-wildduck/commit/b18b91efb04aea71e80c7b4533a95f20f3d1446a))
+* ZMS-82: Log tls data on log:entry hook, bump deps ([#93](https://github.com/zone-eu/zonemta-wildduck/issues/93)) ([9665837](https://github.com/zone-eu/zonemta-wildduck/commit/966583764c1695f925d6f65974108fc9928bd10f))
+
 ## [1.32.30](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.29...v1.32.30) (2026-03-18)
 
 
