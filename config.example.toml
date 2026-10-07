@@ -16,6 +16,38 @@ hostname = "example.com"
 disableUploads = false # if true then messages are not uploaded to Sent Mail folder
 uploadAll = false      # if false then messages from Outlook are not uploaded to Sent Mail folder
 
+# Attachment Storage (Sent Mail)
+# ------------------------------
+# Optional: defaults to GridFS. Match WildDuck's attachment configuration.
+# MongoDB/GridFS is still required for the attachment catalog and existing payloads.
+# attachments.bucket is the MongoDB collection prefix; attachments.s3.bucket is the S3 bucket.
+#
+# ["modules/@zone-eu/zonemta-wildduck".attachments]
+# type = "s3"           # Preferred backend for new attachment hashes
+# bucket = "attachments"
+# decodeBase64 = true   # Match WildDuck's setting
+#
+# ["modules/@zone-eu/zonemta-wildduck".attachments.s3]
+# bucket = "wildduck-attachments"
+# prefix = "production" # Required, nonempty; match WildDuck's prefix
+# region = "us-east-1"
+# endpoint = "https://s3.example.com" # Optional for S3-compatible storage
+# forcePathStyle = false
+# Credentials default to the AWS SDK provider chain (environment, shared config, roles).
+# accessKeyId = ""
+# secretAccessKey = ""
+# sessionToken = ""
+# Optional tuning; these are WildDuck's defaults (milliseconds for timeouts).
+# maxAttempts = 3
+# connectionTimeout = 5000
+# requestTimeout = 30000
+# readTimeout = 30000
+# slowReaderTimeout = 300000
+# maxSockets = 50
+#
+# Keep attachments.s3 configured if S3-backed attachments exist, even when
+# attachments.type = "gridstore". Existing attachments use their recorded backend.
+
 # SRS settings for forwarded emails
 # ---------------------------------
 

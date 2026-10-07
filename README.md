@@ -34,6 +34,28 @@ port=587
 
 Then set up configuration for this plugin, see the [example config](./config.example.toml) file for details.
 
+## S3 Attachment Storage
+
+With WildDuck 1.52.0+, this plugin can store Sent Mail attachments in S3 using its existing `attachments` option. Configure it separately in ZoneMTA to match WildDuck's attachment settings:
+
+```toml
+["modules/@zone-eu/zonemta-wildduck".attachments]
+type = "s3"
+bucket = "attachments" # MongoDB collection prefix
+decodeBase64 = true
+
+["modules/@zone-eu/zonemta-wildduck".attachments.s3]
+bucket = "wildduck-attachments" # S3 bucket name
+prefix = "production" # Required, nonempty
+region = "us-east-1"
+```
+
+Use the same MongoDB attachment database, collection prefix, S3 bucket, object prefix, and `decodeBase64` setting as WildDuck. For S3-compatible services, also configure `endpoint` and, if needed, `forcePathStyle`. Credentials come from the AWS SDK default provider chain, or you can set `accessKeyId`, `secretAccessKey`, and optional `sessionToken` under `attachments.s3`. See the [example config](./config.example.toml) for connection and timeout options.
+
+Without an `attachments` block, this plugin continues to use GridFS. `type` selects the preferred backend for new attachment hashes; existing attachments retain their recorded backend. Keep `attachments.s3` configured wherever S3-backed attachments may be read, even if you switch `type` back to `gridstore`.
+
+MongoDB remains required for attachment metadata and existing GridFS payloads. Audit message copies continue to use GridFS. S3 configuration does not migrate existing attachments.
+
 ## Hybrid Mail Setup (e.g., Google Workspace)
 
 If you use an external mail service (like Google Workspace) as your primary MX but also want to host some addresses locally in WildDuck, you may encounter delivery issues:
