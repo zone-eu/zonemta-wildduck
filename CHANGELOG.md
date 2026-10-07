@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.32.32](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.31...v1.32.32) (2026-10-07)
+
+
+### Bug Fixes
+
+* **deps:** update libmime to 5.4.7, nodemailer to 10.0.14 and wildduck to 1.51.4 ([bd4342c](https://github.com/zone-eu/zonemta-wildduck/commit/bd4342cc9785a099230b9f2aa805ffc7fc54a5f6))
+* ZMS-112: Bump deps, add wildduck s3 config support ([#111](https://github.com/zone-eu/zonemta-wildduck/issues/111)) ([508849a](https://github.com/zone-eu/zonemta-wildduck/commit/508849aa8a7d84c517666cd1edb203f4d37a477c))
+
 ## [1.32.31](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.30...v1.32.31) (2026-07-24)
 
 
