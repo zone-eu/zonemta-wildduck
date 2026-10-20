@@ -16,6 +16,9 @@ hostname = "example.com"
 disableUploads = false # if true then messages are not uploaded to Sent Mail folder
 uploadAll = false      # if false then messages from Outlook are not uploaded to Sent Mail folder
 
+# For Apple push notifications when saving Sent Mail, see config.aps.example.toml.
+# Load those settings at the root of ZoneMTA's main config; this file is loaded under plugins.
+
 # SRS settings for forwarded emails
 # ---------------------------------
 

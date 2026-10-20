@@ -34,6 +34,22 @@ port=587
 
 Then set up configuration for this plugin, see the [example config](./config.example.toml) file for details.
 
+## Apple Push Notifications for Sent Mail
+
+With `@zone-eu/wildduck` 1.52.3 or later, saving a sent message can trigger an Apple push notification for devices subscribed to the Sent Mail folder through `XAPPLEPUSHSERVICE`.
+
+Copy [config.aps.example.toml](./config.aps.example.toml) to your ZoneMTA configuration directory as `aps.toml`. Set `enabled = true`, use the same topic, certificate, private key, and sandbox setting as WildDuck's `imap.aps` configuration, and make the certificate and key files readable by the ZoneMTA process.
+
+Include it at the root of ZoneMTA's main configuration file, before any table header:
+
+```toml
+# @include "./aps.toml"
+```
+
+These settings must load as global `imap.aps` configuration, outside the `plugins` section. ZoneMTA needs its own copy of the APS settings even when they are already configured in the separate WildDuck service. Restart ZoneMTA after configuring them.
+
+Sent Mail uploads must be enabled for the user and `disableUploads` must be `false`. Incoming-mail push remains configured in the receiving WildDuck or LMTP/Inbound SMTP service.
+
 ## Hybrid Mail Setup (e.g., Google Workspace)
 
 If you use an external mail service (like Google Workspace) as your primary MX but also want to host some addresses locally in WildDuck, you may encounter delivery issues:
