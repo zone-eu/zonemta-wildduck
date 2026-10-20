@@ -34,6 +34,14 @@ port=587
 
 Then set up configuration for this plugin, see the [example config](./config.example.toml) file for details.
 
+## S3 Attachment Storage for Sent Mail
+
+Configure attachment storage in the plugin's `attachments` section in [config.example.toml](./config.example.toml). To store new Sent Mail attachment hashes in S3, set `type = "s3"`, uncomment the `attachments.s3` table, and configure its `bucket`, nonempty `prefix`, and connection settings to match WildDuck. Keep the prefix stable and unique per installation. The outer `attachments.bucket` remains the MongoDB GridFS bucket and attachment catalog name.
+
+These settings belong under `plugins["modules/@zone-eu/zonemta-wildduck"].attachments`. ZoneMTA needs its own copy even when S3 is already configured in the separate WildDuck service. Credentials can be set explicitly or supplied through the AWS SDK's default credential provider chain.
+
+GridFS remains the default. Existing attachments retain their recorded backend; changing `type` does not migrate them. Keep the S3 connection settings available while S3 attachments exist, including when `type = "gridstore"`. Update every service sharing the attachment catalog to an S3-capable WildDuck version before enabling S3 writes, then restart ZoneMTA after configuring it.
+
 ## Apple Push Notifications for Sent Mail
 
 With `@zone-eu/wildduck` 1.52.3 or later, saving a sent message can trigger an Apple push notification for devices subscribed to the Sent Mail folder through `XAPPLEPUSHSERVICE`.
