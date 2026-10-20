@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.36](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.35...v1.32.36) (2026-10-20)
+
+
+### Bug Fixes
+
+* bump deps, add apn config ([#122](https://github.com/zone-eu/zonemta-wildduck/issues/122)) ([26956e0](https://github.com/zone-eu/zonemta-wildduck/commit/26956e07de670d7f5f69cac510c6289d3ccee4ae))
+
 ## [1.32.35](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.34...v1.32.35) (2026-10-20)
 
 
