@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.1](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.0...v1.33.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* bump deps, add s3 support ([#126](https://github.com/zone-eu/zonemta-wildduck/issues/126)) ([0842a8f](https://github.com/zone-eu/zonemta-wildduck/commit/0842a8f4e32051105ff439bbfa9f45a8347163cb))
+
 ## [1.33.0](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.36...v1.33.0) (2026-10-20)
 
 
