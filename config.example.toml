@@ -19,6 +19,41 @@ uploadAll = false      # if false then messages from Outlook are not uploaded to
 # For Apple push notifications when saving Sent Mail, see config.aps.example.toml.
 # Load those settings at the root of ZoneMTA's main config; this file is loaded under plugins.
 
+# Attachment storage for Sent Mail
+# ---------------------------------
+# Match WildDuck's attachment storage settings. These settings belong to this
+# plugin, not the root of ZoneMTA's config.
+
+["modules/@zone-eu/zonemta-wildduck".attachments]
+# Preferred backend for new attachment hashes: "gridstore" (default) or "s3".
+# Existing attachments keep their recorded backend; switching does not migrate them.
+type = "gridstore"
+# MongoDB GridFS bucket and attachment catalog, also required when using S3.
+bucket = "attachments"
+# Optional base64 decoding before storage; match WildDuck's decodeBase64 setting.
+# decodeBase64 = true
+
+# Required for type = "s3", and for reading existing S3 attachments even with
+# type = "gridstore". Uncomment this table and set type above to "s3" for new uploads.
+# Use the same S3 settings as WildDuck and other processes sharing its attachment catalog.
+# ["modules/@zone-eu/zonemta-wildduck".attachments.s3]
+# bucket = "wildduck-attachments"
+# prefix = "production" # required, nonempty; keep stable and unique per installation
+# region = "us-east-1"
+# endpoint = "https://s3.example.com" # optional for S3-compatible storage
+# forcePathStyle = false
+# Without explicit credentials, use the AWS SDK default credential provider chain
+# (environment, shared config, instance roles).
+# accessKeyId = ""
+# secretAccessKey = ""
+# sessionToken = ""
+# maxAttempts = 3
+# connectionTimeout = 5000 # ms to establish a connection
+# requestTimeout = 30000 # ms until response headers; uploads also get 2 s per MB
+# readTimeout = 30000 # ms waiting for more S3 data (0 disables)
+# slowReaderTimeout = 300000 # ms waiting for a reader that stopped taking data
+# maxSockets = 50 # per process
+
 # SRS settings for forwarded emails
 # ---------------------------------
 
