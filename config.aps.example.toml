@@ -1,0 +1,13 @@
+# Root-level ZoneMTA configuration for Apple push notifications when saving Sent Mail.
+# Requires @zone-eu/wildduck >= 1.52.3.
+# Include this file from the root of ZoneMTA's main config, before any table header.
+
+[imap.aps]
+enabled = false
+# Use the same APNs topic and credentials as WildDuck's imap.aps settings.
+topic = ""
+# Absolute paths to the APNs certificate and private key, readable by ZoneMTA.
+certPath = "/path/to/apns.pem"
+keyPath = "/path/to/apns.key"
+# Match WildDuck's APNs environment (false selects production).
+sandbox = false
