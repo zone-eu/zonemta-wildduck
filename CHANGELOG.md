@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.35](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.34...v1.32.35) (2026-10-20)
+
+
+### Bug Fixes
+
+* bump deps ([#120](https://github.com/zone-eu/zonemta-wildduck/issues/120)) ([0dc9f56](https://github.com/zone-eu/zonemta-wildduck/commit/0dc9f56467360a9137892a55eafd90e0864ae89a))
+
 ## [1.32.34](https://github.com/zone-eu/zonemta-wildduck/compare/v1.32.33...v1.32.34) (2026-10-20)
 
 
