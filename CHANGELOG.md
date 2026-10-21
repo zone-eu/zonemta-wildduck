@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.5](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.4...v1.33.5) (2026-10-21)
+
+
+### Bug Fixes
+
+* fix docker workflow ([#135](https://github.com/zone-eu/zonemta-wildduck/issues/135)) ([fda780c](https://github.com/zone-eu/zonemta-wildduck/commit/fda780c23abcf0982d1ff1b0bca3704c31f13a53))
+
 ## [1.33.4](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.3...v1.33.4) (2026-10-20)
 
 
