@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.6](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.5...v1.33.6) (2026-10-21)
+
+
+### Bug Fixes
+
+* fix workflow ([#137](https://github.com/zone-eu/zonemta-wildduck/issues/137)) ([c4b640e](https://github.com/zone-eu/zonemta-wildduck/commit/c4b640e4ce4a67e759ec051205f09c008b153cfa))
+
 ## [1.33.5](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.4...v1.33.5) (2026-10-21)
 
 
