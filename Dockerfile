@@ -8,7 +8,9 @@ RUN git clone https://github.com/zone-eu/zone-mta-template ./
 
 RUN npm install @zone-eu/zone-mta
 RUN npm install --production
-RUN npm install @zone-eu/zonemta-wildduck
+
+ARG VERSION=latest
+RUN npm install "@zone-eu/zonemta-wildduck@${VERSION}"
 
 FROM node:lts-alpine as app
 
