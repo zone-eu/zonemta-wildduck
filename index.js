@@ -1,10 +1,12 @@
 'use strict';
 
 const os = require('os');
+const crypto = require('crypto');
 const punycode = require('punycode.js');
 const addressparser = require('nodemailer/lib/addressparser');
 const MimeNode = require('nodemailer/lib/mime-node');
 const MessageHandler = require('@zone-eu/wildduck/lib/message-handler');
+const SMIMEEncryptor = require('@zone-eu/smime-js');
 const UserHandler = require('@zone-eu/wildduck/lib/user-handler');
 const DkimHandler = require('@zone-eu/wildduck/lib/dkim-handler');
 const AuditHandler = require('@zone-eu/wildduck/lib/audit-handler');
@@ -19,8 +21,41 @@ const util = require('util');
 const libmime = require('libmime');
 const dns = require('dns');
 
+function initializeSMIME(app) {
+    // OAEP uses Node's RSA_PKCS1_OAEP_PADDING directly; only PKCS#1 v1.5 needs
+    // an availability flag in the S/MIME library.
+    let pkcs1v15Available = false;
+    try {
+        const { publicKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
+        const probe = crypto.publicEncrypt(
+            { key: publicKey, padding: crypto.constants.RSA_PKCS1_PADDING },
+            Buffer.from('smime-probe')
+        );
+        pkcs1v15Available = !!(probe && probe.length);
+    } catch (err) {
+        // OpenSSL may disable RSA PKCS#1 v1.5 key transport.
+    }
+
+    // WildDuck's server performs this probe, but this plugin imports the message
+    // handler directly. The shared S/MIME library starts with this flag disabled.
+    SMIMEEncryptor.pkcs1v15Available = pkcs1v15Available;
+
+    if (pkcs1v15Available) {
+        app.logger.info('SMIME', 'RSA PKCS#1 v1.5 key transport is available (OpenSSL %s)', process.versions.openssl);
+    } else {
+        app.logger.warn(
+            'SMIME',
+            'RSA PKCS#1 v1.5 key transport is NOT available (OpenSSL %s). ' +
+                'Encryption will fail and Sent copies will be stored unencrypted; set smimeKeyTransport to OAEP.',
+            process.versions.openssl
+        );
+    }
+}
+
 module.exports.title = 'WildDuck MSA';
 module.exports.init = function (app, done) {
+    initializeSMIME(app);
+
     const users = new WeakMap();
 
     const redisClient = app.db.redis;
