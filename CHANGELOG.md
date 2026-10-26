@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.7](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.6...v1.33.7) (2026-10-26)
+
+
+### Bug Fixes
+
+* S/MIME encryption: Initialize encryptor correctly, fix encryption ([#139](https://github.com/zone-eu/zonemta-wildduck/issues/139)) ([e8221bb](https://github.com/zone-eu/zonemta-wildduck/commit/e8221bb1ec2d4c443f45a78f790dea5fc233d1c5))
+
 ## [1.33.6](https://github.com/zone-eu/zonemta-wildduck/compare/v1.33.5...v1.33.6) (2026-10-21)
 
 
