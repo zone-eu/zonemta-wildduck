@@ -14,11 +14,11 @@
         "update": "rm -rf node_modules package-lock.json && ncu -u && npm install"
     },
     "dependencies": {
-        "@zone-eu/wildduck": "1.55.1",
+        "@zone-eu/wildduck": "1.55.2",
         "bcryptjs": "3.0.3",
         "gelf": "2.0.1",
-        "libmime": "5.5.2",
-        "nodemailer": "10.1.7",
+        "libmime": "5.6.3",
+        "nodemailer": "10.2.1",
         "punycode.js": "2.3.1",
         "srs.js": "0.1.0"
     },
