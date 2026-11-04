@@ -947,7 +947,16 @@ module.exports.init = function (app, done) {
                                         skipExisting: true
                                     });
                                     if (data) {
-                                        app.logger.info('Rewrite', '%s MSAUPLSUCC user=%s uid=%s', envelope.id, envelope.user, data.uid);
+                                        loggelf({
+                                            short_message: '[MSAUPLSUCC] ' + envelope.id,
+                                            _mail_action: 'upload',
+                                            _queue_id: envelope.id,
+                                            _user: userData._id.toString(),
+                                            _mailbox: data.mailbox,
+                                            _uid: data.uid,
+                                            _root: data.id
+                                        });
+                                        app.logger.info('Rewrite', '%s MSAUPLSUCC user=%s uid=%s root=%s', envelope.id, envelope.user, data.uid, data.id);
                                     } else {
                                         app.logger.info('Rewrite', '%s MSAUPLSKIP user=%s message=already exists', envelope.id, envelope.user);
                                     }
@@ -1138,7 +1147,8 @@ module.exports.init = function (app, done) {
 
         let message = {
             _queue_id: (entry.id || '').toString(),
-            _queue_id_seq: (entry.seq || '').toString()
+            _queue_id_seq: (entry.seq || '').toString(),
+            _root: (entry.root || '').toString()
         };
 
         const boolFields = [
