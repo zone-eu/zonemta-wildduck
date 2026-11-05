@@ -27,10 +27,7 @@ function initializeSMIME(app) {
     let pkcs1v15Available = false;
     try {
         const { publicKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-        const probe = crypto.publicEncrypt(
-            { key: publicKey, padding: crypto.constants.RSA_PKCS1_PADDING },
-            Buffer.from('smime-probe')
-        );
+        const probe = crypto.publicEncrypt({ key: publicKey, padding: crypto.constants.RSA_PKCS1_PADDING }, Buffer.from('smime-probe'));
         pkcs1v15Available = !!(probe && probe.length);
     } catch (err) {
         // OpenSSL may disable RSA PKCS#1 v1.5 key transport.
@@ -947,7 +944,16 @@ module.exports.init = function (app, done) {
                                         skipExisting: true
                                     });
                                     if (data) {
-                                        app.logger.info('Rewrite', '%s MSAUPLSUCC user=%s uid=%s', envelope.id, envelope.user, data.uid);
+                                        loggelf({
+                                            short_message: '[MSAUPLSUCC] ' + envelope.id,
+                                            _mail_action: 'upload',
+                                            _queue_id: envelope.id,
+                                            _user: userData._id.toString(),
+                                            _mailbox: data.mailbox,
+                                            _uid: data.uid,
+                                            _root: data.id
+                                        });
+                                        app.logger.info('Rewrite', '%s MSAUPLSUCC user=%s uid=%s root=%s', envelope.id, envelope.user, data.uid, data.id);
                                     } else {
                                         app.logger.info('Rewrite', '%s MSAUPLSKIP user=%s message=already exists', envelope.id, envelope.user);
                                     }
@@ -1521,8 +1527,7 @@ module.exports.init = function (app, done) {
     }
 
     const localDeliveryEnabled = !!(app.config.localDelivery && app.config.localDelivery.enabled);
-    const localDeliveryDomains =
-        localDeliveryEnabled && app.config.localDelivery.domains ? [].concat(app.config.localDelivery.domains).join(',') : 'none';
+    const localDeliveryDomains = localDeliveryEnabled && app.config.localDelivery.domains ? [].concat(app.config.localDelivery.domains).join(',') : 'none';
     const srsEnabled = !!(app.config.srs && app.config.srs.enabled);
     const dkimEnabled = !!(app.config.dkim && app.config.dkim.signTransportDomain);
     const acmeEnabled = !!(app.config.acme && app.config.acme.autogenerate && app.config.acme.autogenerate.enabled);
