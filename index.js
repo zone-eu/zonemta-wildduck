@@ -27,10 +27,7 @@ function initializeSMIME(app) {
     let pkcs1v15Available = false;
     try {
         const { publicKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-        const probe = crypto.publicEncrypt(
-            { key: publicKey, padding: crypto.constants.RSA_PKCS1_PADDING },
-            Buffer.from('smime-probe')
-        );
+        const probe = crypto.publicEncrypt({ key: publicKey, padding: crypto.constants.RSA_PKCS1_PADDING }, Buffer.from('smime-probe'));
         pkcs1v15Available = !!(probe && probe.length);
     } catch (err) {
         // OpenSSL may disable RSA PKCS#1 v1.5 key transport.
@@ -1147,8 +1144,7 @@ module.exports.init = function (app, done) {
 
         let message = {
             _queue_id: (entry.id || '').toString(),
-            _queue_id_seq: (entry.seq || '').toString(),
-            _root: (entry.root || '').toString()
+            _queue_id_seq: (entry.seq || '').toString()
         };
 
         const boolFields = [
@@ -1531,8 +1527,7 @@ module.exports.init = function (app, done) {
     }
 
     const localDeliveryEnabled = !!(app.config.localDelivery && app.config.localDelivery.enabled);
-    const localDeliveryDomains =
-        localDeliveryEnabled && app.config.localDelivery.domains ? [].concat(app.config.localDelivery.domains).join(',') : 'none';
+    const localDeliveryDomains = localDeliveryEnabled && app.config.localDelivery.domains ? [].concat(app.config.localDelivery.domains).join(',') : 'none';
     const srsEnabled = !!(app.config.srs && app.config.srs.enabled);
     const dkimEnabled = !!(app.config.dkim && app.config.dkim.signTransportDomain);
     const acmeEnabled = !!(app.config.acme && app.config.acme.autogenerate && app.config.acme.autogenerate.enabled);
